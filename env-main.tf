@@ -31,26 +31,17 @@ resource "google_compute_subnetwork" "nets-intellibot-c" {
 }
 
 resource "google_compute_network_peering" "peering-dev-to-preprod" {
-  count = length(var.vpc-spoke)
-
   name         = "peering-${google_compute_network.vpc-intellibot[0].name}-to-${google_compute_network.vpc-intellibot[1].name}"
   network      = google_compute_network.vpc-intellibot[0].id
   peer_network = google_compute_network.vpc-intellibot[1].id
-  export_custom_routes = true
 }
 resource "google_compute_network_peering" "peering-dev-to-prod" {
-  count = length(var.vpc-spoke)
-
   name         = "peering-${google_compute_network.vpc-intellibot[0].name}-to-${google_compute_network.vpc-intellibot[2].name}"
   network      = google_compute_network.vpc-intellibot[0].id
   peer_network = google_compute_network.vpc-intellibot[2].id
-  export_custom_routes = true
 }
 resource "google_compute_network_peering" "peering-preprod-to-prod" {
-  count = length(var.vpc-spoke)
-
   name         = "peering-${google_compute_network.vpc-intellibot[1].name}-to-${google_compute_network.vpc-intellibot[2].name}"
   network      = google_compute_network.vpc-intellibot[1].id
   peer_network = google_compute_network.vpc-intellibot[2].id
-  export_custom_routes = true
 }
