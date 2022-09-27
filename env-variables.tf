@@ -21,3 +21,11 @@ variable "project-concept" {
   default = "intellibot"
   description = "variable used to name resources"
 }
+
+variable "network-definition" {
+  description = "variable used to define network resources"
+  default = {
+    0 = ["dev","10.10.0.0/24","10.10.1.0/24","10.10.2.0/24"]
+    1 = ["prod","10.20.0.0/24","10.20.1.0/24","10.20.2.0/24"]
+  }
+}

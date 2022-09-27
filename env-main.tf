@@ -1,4 +1,19 @@
 
+
+resource "google_compute_network" "vpc-intellibot-A" {
+  name                    = "vpc-${var.project-concept}-A"
+  auto_create_subnetworks = "false"
+}
+
+# Subnet
+resource "google_compute_subnetwork" "nets-intellibot-A" {
+  count     = lenth(var.network-definition)
+  region    = var.gcp-region
+  network   = google_compute_network.vpc-intellibot-A.name
+  ip_cidr_range = lookup(var.var.network-definition,count.index)[1]
+  name      = "net-${var.project-concept}-${lookup(var.var.network-definition,count.index)[0]}"  
+}
+/*
 module "vpc-intellibot-A" {
   source  = "terraform-google-modules/network/google//modules/vpc"
   version = "~> 2.0.0"
@@ -61,3 +76,4 @@ module "nets-intellibot-B" {
     }
   ]
 }
+*/
