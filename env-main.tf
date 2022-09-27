@@ -4,7 +4,6 @@ resource "google_compute_network" "vpc-intellibot" {
   auto_create_subnetworks = "false"
 }
 
-# Subnet
 resource "google_compute_subnetwork" "nets-intellibot-a" {
   count     = length(var.network-definition)
   region    = var.gcp-region
