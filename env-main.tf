@@ -28,5 +28,5 @@ resource "google_compute_subnetwork" "nets-intellibot-C" {
   private_ip_google_access = true
   network   = google_compute_network.vpc-intellibot[count.index].name
   ip_cidr_range = lookup(var.network-definition,count.index)[3]
-  name      = "net-${var.project-concept}-${lookup(var.network-definition,count.index)[0]}-B"  
+  name      = "net-${var.project-concept}-${lookup(var.network-definition,count.index)[0]}-C"  
 }
