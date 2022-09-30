@@ -61,3 +61,45 @@ resource "google_compute_network_peering" "peering-prod-to-preprod" {
   network      = google_compute_network.vpc-intellibot[2].id
   peer_network = google_compute_network.vpc-intellibot[1].id
 }
+
+resource "google_compute_firewall" "fw-intellibot" {
+  count   = length(var.network-definition)
+  name    = "pkg-firewall-${lookup(var.network-definition,count.index)[0]}-web"
+  network = google_compute_network.vpc-intellibot[count.index].name
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "8080", "1000-2000"]
+  }
+
+  source_tags = ["web"]
+}
+
+resource "google_storage_bucket" "my-bucket" {
+  name          = "bkt-${var.project-concept}-priv"
+  location      = "EU"
+  force_destroy = true
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    condition {
+      age = 7
+    }
+    action {
+      type = "Delete"
+    }
+  }
+}
+
+resource "google_storage_bucket_access_control" "my-bucket-acl-public" {
+  bucket = google_storage_bucket.my-bucket.name
+  role   = "READER"
+  entity = "allUsers"
+}
